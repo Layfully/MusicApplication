@@ -9,6 +9,6 @@ namespace MusicApplication.Data.Entities
         public string LastName { get; set; }
         public int Age { get; set; }
         public string MainStyle { get; set; }
-        public ICollection<Album> Albums { get; set; }
+        public ICollection<PerformerAlbum> PerformerAlbums { get; set; }
     }
 }

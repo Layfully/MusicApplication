@@ -11,6 +11,6 @@ namespace MusicApplication.Data.Entities
         public string Genre { get; set; }
         public int PublisherId { get; set; }
         public ICollection<Song> Songs { get; set; }
-        public ICollection<Performer> Performers { get; set; }
+        public ICollection<PerformerAlbum> PerformerAlbums { get; set; }
     }
 }
