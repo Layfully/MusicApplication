@@ -1,0 +1,46 @@
+﻿@model MusicApplication.Data.Entities.Publisher
+
+@{
+    ViewData["Title"] = "Usuwanie wydawcy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Usuwanie</h1>
+
+<h3>Czy na pewno chcesz usunąć tego wydawcę?</h3>
+<div>
+    <h4>Wydawca</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Nazwa
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Data utworzenia
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        <dt class = "col-sm-2">
+            Lokalizacja
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+        <dt class = "col-sm-2">
+            Kraj
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="Index">Powrót do listy</a>
+    </form>
+</div>

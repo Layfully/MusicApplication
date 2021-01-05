@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicApplication.Data.Entities;
 using QuizyfyAPI.Data;
+using System.Globalization;
 
 namespace MusicApplication
 {
@@ -21,6 +23,8 @@ namespace MusicApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization();
+
             services.AddControllersWithViews(); 
 
             services.AddDbContext<MusicDbContext>(options =>
@@ -44,6 +48,20 @@ namespace MusicApplication
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //Added to support Trump
+            var supportedCultures = new[]{
+                new CultureInfo("en-US")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                FallBackToParentCultures = false
+            });
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

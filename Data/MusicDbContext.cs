@@ -21,6 +21,16 @@ namespace QuizyfyAPI.Data
 
             modelBuilder.Entity<PerformerAlbum>()
                 .HasKey(entity => new { entity.AlbumId, entity.PerformerId });
+
+            modelBuilder.Entity<PerformerAlbum>()
+                .HasOne(entity => entity.Album)
+                .WithMany(entity => entity.PerformerAlbums)
+                .HasForeignKey(entity => entity.AlbumId);
+            
+            modelBuilder.Entity<PerformerAlbum>()
+                .HasOne(entity => entity.Performer)
+                .WithMany(entity => entity.PerformerAlbums)
+                .HasForeignKey(entity => entity.PerformerId);
         }
     }
 }

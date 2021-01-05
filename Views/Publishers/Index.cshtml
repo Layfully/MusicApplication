@@ -1,0 +1,54 @@
+﻿@model IEnumerable<MusicApplication.Data.Entities.Publisher>
+
+@{
+    ViewData["Title"] = "Wydawcy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Wydawcy</h1>
+
+<p>
+    <a asp-action="Create">Dodaj nowego wydawcę</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa
+            </th>
+            <th>
+                Data utworzenia
+            </th>
+            <th>
+                Lokalizacja
+            </th>
+            <th>
+                Kraj
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
