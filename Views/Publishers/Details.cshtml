@@ -1,4 +1,4 @@
-﻿@model MusicApplication.Data.Entities.Publisher
+﻿@model Publisher
 
 @{
     ViewData["Title"] = "Szczegóły wydawcy";
@@ -11,28 +11,30 @@
     <h4>Wydawca</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            Nazwa
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            Data utworzenia
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreationDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreationDate)
         </dd>
-        <dt class = "col-sm-2">
-            Lokalizacja
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Location)
+
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Location)
         </dd>
-        <dt class = "col-sm-2">
-            Kraj
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Country)
+
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Country)
         </dd>
     </dl>

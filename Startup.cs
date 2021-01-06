@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicApplication.Data.Entities;
+using MusicApplication.Services;
 using QuizyfyAPI.Data;
+using System;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace MusicApplication
 {
@@ -19,6 +23,27 @@ namespace MusicApplication
         }
 
         public IConfiguration Configuration { get; }
+	
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            // Initializing custom roles   
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<User>>();
+ 
+            IdentityResult roleResult;
+ 
+            // Adding Admin Role
+            var roleCheck = await RoleManager.RoleExistsAsync("Administrator");
+            if (!roleCheck)
+            {
+                //Create the roles and seed them to the database 
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Administrator"));
+            }
+ 
+            // Assign Admin role to newly registered user
+            User user = await UserManager.FindByEmailAsync("adriangaborek3gmail.com");
+            await UserManager.AddToRoleAsync(user, "Admin");
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,14 +55,17 @@ namespace MusicApplication
             services.AddDbContext<MusicDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MusicDatabase")));
 
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MusicDbContext>();
+            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MusicDbContext>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
 
+            services.AddTransient<IdentityErrorDescriber, PolishIdentityErrorDescriber>();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+        { 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

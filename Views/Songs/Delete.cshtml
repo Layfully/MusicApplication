@@ -1,4 +1,4 @@
-﻿@model MusicApplication.Data.Entities.Song
+﻿@model Song
 
 @{
     ViewData["Title"] = "Usuwanie albumu";
@@ -12,26 +12,26 @@
     <h4>Song</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            Nazwa
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            Adres URL
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Url)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Url)
         </dd>
-        <dt class = "col-sm-2">
-            Długość
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Length)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Length)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Usuń" class="btn btn-danger" /> |
