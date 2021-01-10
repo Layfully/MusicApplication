@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace MusicApplication.Data.Entities
 {
@@ -16,6 +19,21 @@ namespace MusicApplication.Data.Entities
         [DisplayName("Wydawca")]
         public int PublisherId { get; set; }
         public ICollection<Song> Songs { get; set; }
+        [JsonIgnore]
         public ICollection<PerformerAlbum> PerformerAlbums { get; set; }
+
+        [DisplayName("Zdjęcie okładki")]
+        public byte[] Picture { get; set; }
+
+        [NotMapped]
+        [DisplayName("Artyści")]
+        public IEnumerable<Performer> Performers
+        {
+            get => PerformerAlbums.Select(x => x.Performer);
+            set => PerformerAlbums = value.Select(v => new PerformerAlbum()
+            {
+                PerformerId = v.Id
+            }).ToList();
+        }
     }
 }

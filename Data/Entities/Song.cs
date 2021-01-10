@@ -13,5 +13,6 @@ namespace MusicApplication.Data.Entities
         public float Length { get; set; }
         [DisplayName("Album")]
         public int AlbumId { get; set; }
+        public Album Album { get; set; }
     }
 }

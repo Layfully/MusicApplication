@@ -1,8 +1,59 @@
-﻿@{
-    ViewData["Title"] = "Strona główna";
+﻿@model IEnumerable<Song>
+
+@{
+    ViewData["Title"] = "Piosenki";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Piosenki</h1>
+
+<p>
+    <a class="btn btn-dark" asp-action="Create">Dodaj nową piosenkę</a>
+</p>
+<table class="table table-dark table-hover table-sm text-center">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Length)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Album.Performers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Album)
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a href="@item.Url">@Html.DisplayFor(modelItem => item.Url)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Length) min
+            </td>
+            <td>
+                @foreach (var performer in item.Album.Performers.Select(x => new { x.FullName, x.Id }))
+                {
+                    <a asp-controller="Performers" asp-action="Details" asp-route-id="@performer.Id">@performer.FullName</a>
+                }
+            </td>
+            <td>
+                <a asp-controller="Albums" asp-action="Details" asp-route-id="@item.AlbumId">@Html.DisplayFor(modelItem => item.Album.Name)</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

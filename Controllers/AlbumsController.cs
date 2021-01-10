@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -60,11 +62,22 @@ namespace MusicApplication.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,Genre,PublisherId")] Album album)
+        public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,Genre,PublisherId,Picture")] Album album)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(album);
+
+                if (Request.Form.Files.Count > 0)
+                {
+                    IFormFile file = Request.Form.Files.FirstOrDefault();
+                    using (var dataStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(dataStream);
+                        album.Picture = dataStream.ToArray();
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -101,7 +114,7 @@ namespace MusicApplication.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ReleaseDate,Genre,PublisherId")] Album album)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ReleaseDate,Genre,PublisherId,Picture")] Album album)
         {
             if (id != album.Id)
             {
@@ -112,6 +125,16 @@ namespace MusicApplication.Controllers
             {
                 try
                 {
+                    if (Request.Form.Files.Count > 0)
+                    {
+                        IFormFile file = Request.Form.Files.FirstOrDefault();
+                        using (var dataStream = new MemoryStream()) 
+                        {
+                            await file.CopyToAsync(dataStream);
+                            album.Picture = dataStream.ToArray();
+                        }
+                    }
+
                     _context.Update(album);
                     await _context.SaveChangesAsync();
                 }

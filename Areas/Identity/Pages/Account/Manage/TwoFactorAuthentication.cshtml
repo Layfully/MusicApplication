@@ -13,21 +13,21 @@
     {
         <div class="alert alert-danger">
             <strong>Nie masz już żadnych kodów odzyskiwania.</strong>
-            <p>Musisz <a asp-page="./GenerateRecoveryCodes">wygenerować nowe kody</a>, aby móc zalogować się przy ich pomocy.</p>
+            <p>Musisz <a class="btn btn-dark" asp-page="./GenerateRecoveryCodes">wygenerować nowe kody</a>, aby móc zalogować się przy ich pomocy.</p>
         </div>
     }
     else if (Model.RecoveryCodesLeft == 1)
     {
         <div class="alert alert-danger">
             <strong>Posiadasz jeden kod odzyskiwania.</strong>
-            <p>Możesz <a asp-page="./GenerateRecoveryCodes">wygenerować nowe kody</a>.</p>
+            <p>Możesz <a class="btn btn-dark" asp-page="./GenerateRecoveryCodes">wygenerować nowe kody</a>.</p>
         </div>
     }
     else if (Model.RecoveryCodesLeft <= 3)
     {
         <div class="alert alert-warning">
             <strong>Posiadasz @Model.RecoveryCodesLeft kodów odzyskiwania.</strong>
-            <p>Powinieneś <a asp-page="./GenerateRecoveryCodes">wygenerować nowe kody</a>.</p>
+            <p>Powinieneś <a class="btn btn-dark" asp-page="./GenerateRecoveryCodes">wygenerować nowe kody</a>.</p>
         </div>
     }
 
@@ -37,18 +37,18 @@
             <button type="submit" class="btn btn-danger">Zapomnij tą przeglądarkę</button>
         </form>
     }
-    <a asp-page="./Disable2fa" class="btn btn-primary">Wyłącz 2FA</a>
+    <a asp-page="./Disable2fa" class="btn btn-dark">Wyłącz 2FA</a>
     <a asp-page="./GenerateRecoveryCodes" class="btn btn-danger">Zresetuj kody odzyskiwania</a>
 }
 
 <h5>Aplikacja uwierzytelniająca</h5>
 @if (!Model.HasAuthenticator)
 {
-    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Dodaj aplikację uwierzytelniającą</a>
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-dark">Dodaj aplikację uwierzytelniającą</a>
 }
 else
 {
-    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Ustaw aplikację uwierzytelniającą</a>
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-dark">Ustaw aplikację uwierzytelniającą</a>
     <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-danger">Zresetuj aplikację uwierzytelniającą</a>
 }
 

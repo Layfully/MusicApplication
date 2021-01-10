@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MusicApplication.Data.Entities
 {
@@ -15,5 +16,7 @@ namespace MusicApplication.Data.Entities
         [DisplayName("Główny styl")]
         public string MainStyle { get; set; }
         public ICollection<PerformerAlbum> PerformerAlbums { get; set; }
+        [NotMapped]
+        public string FullName { get => $"{FirstName}  {LastName}"; }
     }
 }

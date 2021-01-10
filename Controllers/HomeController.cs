@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MusicApplication.Models;
+using QuizyfyAPI.Data;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,15 +17,20 @@ namespace MusicApplication.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly MusicDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, MusicDbContext context)
         {
             _logger = logger;
+            _context = context;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var x = await _context.Songs.Include(song => song.Album).ThenInclude(album => album.PerformerAlbums).ThenInclude(performerAlbum => performerAlbum.Performer).ToListAsync();
+            return View(x);
         }
 
         public IActionResult Privacy()

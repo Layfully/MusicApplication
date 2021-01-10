@@ -26,14 +26,14 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Zaloguj się</button>
+                <button type="submit" class="btn btn-dark">Zaloguj się</button>
             </div>
         </form>
     </div>
 </div>
 <p>
     Nie posiadasz dostępu do urządzenia z aplikacją uwierzytelniającą? Możesz
-    <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">zalogować się kodem odzyskiwania</a>.
+    <a class="btn btn-dark" id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">zalogować się kodem odzyskiwania</a>.
 </p>
 
 @section Scripts {
