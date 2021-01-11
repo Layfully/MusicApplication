@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -53,7 +51,13 @@ namespace MusicApplication.Controllers
                 Value = publisher.Id.ToString(),
                 Text = publisher.Name
             }).ToList();
-
+            
+            ViewBag.PerformerList = _context.Performers.Select(performer => new SelectListItem
+            {
+                Value = performer.Id.ToString(),
+                Text = performer.FullName
+            }).ToList();
+            
             return View();
         }
 
@@ -71,11 +75,20 @@ namespace MusicApplication.Controllers
                 if (Request.Form.Files.Count > 0)
                 {
                     IFormFile file = Request.Form.Files.FirstOrDefault();
-                    using (var dataStream = new MemoryStream())
-                    {
-                        await file.CopyToAsync(dataStream);
-                        album.Picture = dataStream.ToArray();
-                    }
+                    using var dataStream = new MemoryStream();
+                    await file.CopyToAsync(dataStream);
+                    album.Picture = dataStream.ToArray();
+                }
+                await _context.SaveChangesAsync();
+
+                foreach (string id in Request.Form["Performers"])
+                {
+                    PerformerAlbum performerAlbum = new PerformerAlbum() { 
+                        AlbumId = album.Id,
+                        PerformerId = int.Parse(id)
+                    };
+
+                    _context.Add(performerAlbum);
                 }
 
                 await _context.SaveChangesAsync();
@@ -92,7 +105,9 @@ namespace MusicApplication.Controllers
                 return NotFound();
             }
 
-            var album = await _context.Albums.FindAsync(id);
+
+            var album = await _context.Albums.Include(album => album.PerformerAlbums).ThenInclude(performerAlbum => performerAlbum.Performer).FirstOrDefaultAsync(album => album.Id == id);
+
             if (album == null)
             {
                 return NotFound();
@@ -105,6 +120,16 @@ namespace MusicApplication.Controllers
                 Text = publisher.Name
             }).ToList();
 
+            ViewBag.PerformerList = _context.Performers.Select(performer => new SelectListItem
+            {
+                Value = performer.Id.ToString(),
+                Text = performer.FullName
+            }).ToList();
+
+            foreach(SelectListItem item in ViewBag.PerformerList)
+            {
+                item.Selected = album.PerformerAlbums.Any(albumPerformer => albumPerformer.PerformerId == int.Parse(item.Value));
+            }
 
             return View(album);
         }
@@ -128,14 +153,40 @@ namespace MusicApplication.Controllers
                     if (Request.Form.Files.Count > 0)
                     {
                         IFormFile file = Request.Form.Files.FirstOrDefault();
-                        using (var dataStream = new MemoryStream()) 
-                        {
-                            await file.CopyToAsync(dataStream);
-                            album.Picture = dataStream.ToArray();
-                        }
+                        using var dataStream = new MemoryStream();
+                        await file.CopyToAsync(dataStream);
+                        album.Picture = dataStream.ToArray();
+                    }
+
+                    album = await _context.Albums.Include(album => album.PerformerAlbums).AsNoTracking().FirstOrDefaultAsync(album => album.Id == id);
+
+                    foreach (var performerAlbum in album.PerformerAlbums)
+                    {
+                        _context.PerformerAlbums.Remove(performerAlbum);
+                    }
+
+
+                    if (Request.Form.Files.Count > 0)
+                    {
+                        IFormFile file = Request.Form.Files.FirstOrDefault();
+                        using var dataStream = new MemoryStream();
+                        await file.CopyToAsync(dataStream);
+                        album.Picture = dataStream.ToArray();
                     }
 
                     _context.Update(album);
+                    await _context.SaveChangesAsync();
+
+                    foreach (string performerId in Request.Form["Performers"])
+                    {
+                        PerformerAlbum performerAlbum = new PerformerAlbum()
+                        {
+                            AlbumId = album.Id,
+                            PerformerId = int.Parse(performerId)
+                        };
+
+                        _context.Add(performerAlbum);
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

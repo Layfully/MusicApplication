@@ -47,20 +47,24 @@
                 <input type="file"
                        accept=".png,.jpg,.jpeg,.gif,.tif"
                        asp-for="Picture"
-                       class="form-control"
-                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       class="form-control text-white"
+                       style="background:unset;border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
                        onchange="document.getElementById('picture').src = window.URL.createObjectURL(this.files[0])" />
                 <span asp-validation-for="Picture" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Zapisz" class="btn btn-primary" />
+                <label asp-for="Performers" class="control-label"></label>
+                <select name="Performers" multiple class="custom-select"  asp-items="ViewBag.PerformerList"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-dark" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Powrót do listy</a>
+    <a class="btn btn-dark" asp-action="Index">Powrót do listy</a>
 </div>
 
 @section Scripts {

@@ -8,10 +8,10 @@
 <h1>Piosenki</h1>
 
 <p>
-    <a class="btn btn-dark" asp-action="Create">Dodaj nową piosenkę</a>
+    <a class="btn btn-dark" asp-controller="Songs" asp-action="Create">Dodaj nową piosenkę</a>
 </p>
 <table class="table table-dark table-hover table-sm text-center">
-    <thead class="thead-dark">
+    <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -35,22 +35,22 @@
         @foreach (var item in Model)
         {
         <tr>
-            <td>
+            <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="align-middle">
                 <a href="@item.Url">@Html.DisplayFor(modelItem => item.Url)</a>
             </td>
-            <td>
+            <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.Length) min
             </td>
-            <td>
+            <td class="align-middle">
                 @foreach (var performer in item.Album.Performers.Select(x => new { x.FullName, x.Id }))
                 {
                     <a asp-controller="Performers" asp-action="Details" asp-route-id="@performer.Id">@performer.FullName</a>
                 }
             </td>
-            <td>
+            <td class="align-middle">
                 <a asp-controller="Albums" asp-action="Details" asp-route-id="@item.AlbumId">@Html.DisplayFor(modelItem => item.Album.Name)</a>
             </td>
         </tr>

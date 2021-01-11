@@ -29,7 +29,7 @@ namespace MusicApplication.Data.Entities
         [DisplayName("Artyści")]
         public IEnumerable<Performer> Performers
         {
-            get => PerformerAlbums.Select(x => x.Performer);
+            get => PerformerAlbums?.Select(x => x.Performer) ?? null;
             set => PerformerAlbums = value.Select(v => new PerformerAlbum()
             {
                 PerformerId = v.Id

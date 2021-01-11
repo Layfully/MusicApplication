@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MusicApplication.Models
+﻿namespace MusicApplication.Models
 {
     public class ManageUserRolesModel
     {

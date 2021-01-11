@@ -9,7 +9,7 @@ namespace MusicApplication.Data
 {
     public static class ContextSeed
     {
-        public static async Task SeedRolesAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
             await roleManager.CreateAsync(new IdentityRole(Roles.SuperAdmin.ToString()));
@@ -17,7 +17,7 @@ namespace MusicApplication.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.Podstawowa.ToString()));
         }
 
-        public static async Task SeedSuperAdminAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedSuperAdminAsync(UserManager<User> userManager)
         {
             //Seed Default User
             var superUser = new User

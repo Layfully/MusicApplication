@@ -29,16 +29,16 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Url)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Length) min
                 </td>
-                <td>
+                <td class="align-middle">
                     <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
